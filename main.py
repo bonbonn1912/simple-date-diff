@@ -1,22 +1,29 @@
-import os, datetime, time, shutil
+import os,time, shutil, keyboard
 from pathlib import Path
 
-def list_files(dir):
+source_path = r"F:\Coding\Test"
+destination_path = r'F:\Coding\New' 
+
+def list_files():
     r = []
-    source_path = 'insert_source_path'
-    new_path = 'insert_new_dest'
     number = 0
-    for root, files in os.walk(dir):
+    for root,dirs, files in os.walk(source_path):
         for name in files:      
             r = os.path.join(root, name)
             last_time = os.path.getmtime(r)
-            if(round(time.time()) - round(last_time) < 60):
+            if(round(time.time()) - round(last_time) < 120):
                 number += 1
-                new_dest = r.replace(source_path, new_path)
+                new_dest = r.replace(source_path, destination_path)
                 shutil.copy(r, new_dest)
-                print(new_dest)
     return number
-start = time.time()
-all_files = list_files(os.getcwd())
-end = time.time()
-print("moved " + str(all_files) + " files in " + str(end - start) + " seconds")
+
+def run():
+    start = time.time()
+    number = list_files()
+    end = time.time()
+    print("moved " + str(number) + " files in " + str(end - start) + " seconds")
+
+
+keyboard.add_hotkey('ctrl + s', run)
+  
+keyboard.wait('ctrl + l') 
